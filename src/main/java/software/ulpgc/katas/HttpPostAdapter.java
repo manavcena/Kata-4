@@ -7,7 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class HttpPostAdapter implements PostClient{
+public class HttpPostAdapter implements UserClient{
     private final String baseUrl;
     private final HttpClient httpClient;
     private final Gson gson;
@@ -19,10 +19,10 @@ public class HttpPostAdapter implements PostClient{
     }
 
     @Override
-    public Post getById(int id) {
+    public User getById(int id) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/posts/" + id))
+                    .uri(URI.create(baseUrl + "/users/" + id))
                     .GET()
                     .build();
 
@@ -32,7 +32,7 @@ public class HttpPostAdapter implements PostClient{
                 throw new RuntimeException("Service returned status code: " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), Post.class);
+            return gson.fromJson(response.body(), User.class);
 
         } catch (Exception e) {
             throw new RuntimeException("Network or parsing error: " + e.getMessage());
