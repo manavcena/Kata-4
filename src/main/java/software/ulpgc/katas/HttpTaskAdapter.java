@@ -7,22 +7,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class HttpPostAdapter implements UserClient{
+public class HttpTaskAdapter implements TaskClient {
     private final String baseUrl;
     private final HttpClient httpClient;
     private final Gson gson;
 
-    public HttpPostAdapter(String baseUrl) {
+    public HttpTaskAdapter(String baseUrl) {
         this.baseUrl = baseUrl;
         this.httpClient = HttpClient.newHttpClient();
         this.gson = new Gson();
     }
 
     @Override
-    public User getById(int id) {
+    public Task getById(int id) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/users/" + id))
+                    .uri(URI.create(baseUrl + "/todos/" + id))
                     .GET()
                     .build();
 
@@ -32,7 +32,7 @@ public class HttpPostAdapter implements UserClient{
                 throw new RuntimeException("Service returned status code: " + response.statusCode());
             }
 
-            return gson.fromJson(response.body(), User.class);
+            return gson.fromJson(response.body(), Task.class);
 
         } catch (Exception e) {
             throw new RuntimeException("Network or parsing error: " + e.getMessage());
